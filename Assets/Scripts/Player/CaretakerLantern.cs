@@ -8,6 +8,12 @@ namespace LanternLaurel.Player
     [RequireComponent(typeof(Light))]
     public class CaretakerLantern : MonoBehaviour
     {
+        /// <summary>
+        /// Simple auto-lookup so scene objects (like SpiritController zones) don't need a manual Inspector drag-and-drop for every instance.
+        /// Assumes a single player lantern per scene.
+        /// </summary>
+        public static CaretakerLantern Instance { get; private set; }
+
         [Header("Light Settings")]
         [SerializeField] private float baseIntensity = 2.5f;
         [SerializeField] private float maxRange = 12f;
@@ -29,6 +35,8 @@ namespace LanternLaurel.Player
 
         private void Awake()
         {
+            Instance = this;
+
             _lanternLight = GetComponent<Light>();
             _lanternLight.type = LightType.Point;
             _lanternLight.color = normalColor;
