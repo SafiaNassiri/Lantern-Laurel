@@ -10,7 +10,7 @@ namespace LanternLaurel.Player
     {
         /// <summary>
         /// Simple auto-lookup so scene objects (like SpiritController zones) don't need a manual Inspector drag-and-drop for every instance.
-        /// Assumes a single player lantern per scene.
+        /// Assumes a single player lantern per scene, which holds for this game's scope (one playable character).
         /// </summary>
         public static CaretakerLantern Instance { get; private set; }
 
@@ -85,6 +85,22 @@ namespace LanternLaurel.Player
         public void SetSpiritProximity(bool nearby)
         {
             isSpiritNearby = nearby;
+        }
+
+        /// <summary>
+        /// One-shot flicker for a fixed duration, then automatically returns to normal.
+        /// </summary>
+        public void Pulse(float durationSeconds = 2f)
+        {
+            StopAllCoroutines(); // avoid overlapping pulses stacking oddly
+            StartCoroutine(PulseRoutine(durationSeconds));
+        }
+
+        private System.Collections.IEnumerator PulseRoutine(float durationSeconds)
+        {
+            isSpiritNearby = true;
+            yield return new WaitForSeconds(durationSeconds);
+            isSpiritNearby = false;
         }
 
         /// <summary>
