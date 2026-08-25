@@ -88,4 +88,4 @@ Lantern-Laurel/
 
 ## License
 Private project — All rights reserved. 
-Story, game design, characters, and assets are original works by Safia Nassiri.
+Story, game design, characters, and assets are original works by V.O.I.D.
