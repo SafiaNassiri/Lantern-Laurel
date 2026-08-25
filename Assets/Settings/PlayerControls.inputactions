@@ -61,7 +61,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Crouch",
+                    "name": "Sprint",
                     "type": "Button",
                     "id": "1f0b9880-4180-4090-b578-9abcabfcc978",
                     "expectedControlType": "",
@@ -248,11 +248,11 @@
                 {
                     "name": "",
                     "id": "81e64a3b-1819-41a3-8615-f2709ea22f3c",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Crouch",
+                    "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
