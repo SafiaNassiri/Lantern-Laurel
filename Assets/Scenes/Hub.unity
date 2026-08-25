@@ -959,7 +959,7 @@ MonoBehaviour:
       Enabled: 1
       Input:
         InputAction: {fileID: 657826228145860895, guid: 1080ba26b9ddabd4c8bb9f299003d3cb, type: 3}
-        Gain: 1
+        Gain: 5
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -989,6 +989,74 @@ MonoBehaviour:
         DecelTime: 0
   PlayerIndex: -1
   AutoEnableInputs: 1
+--- !u!1 &1759890096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1759890098}
+  - component: {fileID: 1759890097}
+  - component: {fileID: 1759890099}
+  m_Layer: 0
+  m_Name: Chore_SweepEastPath
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1759890097
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759890096}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1759890098
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759890096}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 20.3, y: -0, z: -1.4}
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1759890099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759890096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b54aa3e6e13679419b92b997d588fbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GraveyardShift.Chores.ChoreInteractable
+  choreId: sweep_east_path
+  interactPrompt: Press E to interact
 --- !u!1 &1886783416 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8898891693013609774, guid: f6224cde4bb598b49b4f9da2206d1d6a, type: 3}
@@ -1223,8 +1291,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1955885184}
-  - component: {fileID: 1955885183}
   - component: {fileID: 1955885185}
+  - component: {fileID: 1955885186}
   m_Layer: 0
   m_Name: Spirit_TheGardener
   m_TagString: Untagged
@@ -1232,25 +1300,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1955885183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1955885182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 855be56aeefbf6b4db5142e581708d20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpiritController
-  spiritId: the_gardener
-  wantDescription: 
-  coldZoneRadius: 4
-  nearbyLantern: {fileID: 0}
-  onResolved:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &1955885184
 Transform:
   m_ObjectHideFlags: 0
@@ -1287,6 +1336,25 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1955885186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955885182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ccc6db4b04025f42857b13b75100948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GraveyardShift.Spirits.SpiritController
+  spiritId: the_gardener
+  wantDescription: 
+  coldZoneRadius: 4
+  nearbyLantern: {fileID: 0}
+  onResolved:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &2608256052145451192
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1372,4 +1440,5 @@ SceneRoots:
   - {fileID: 1917126008}
   - {fileID: 1955885184}
   - {fileID: 1919720931}
-  - {fileID: 1156661048}
+  - {fileID: 1162072561}
+  - {fileID: 1759890098}

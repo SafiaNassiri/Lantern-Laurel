@@ -12,21 +12,19 @@ namespace GraveyardShift.Spirits
     }
 
     /// <summary>
-    /// Every spirit micro-quest resolves into one of three standardized states so the whole roster shares one resolution system instead of one-off scripted endings per spirit.
+    /// Every spirit micro-quest resolves into one of three standardized states so the whole roster shares one resolution system instead of one-off scripted endings per spirit. 
+    /// Also listens for the Interact action while the player is inside its trigger zone, so interacting with a spirit resolves it as Released. 
     /// </summary>
     public class SpiritController : MonoBehaviour
     {
         [Header("Identity")]
         public string spiritId;
-        [TextArea] public string wantDescription; 
+        [TextArea] public string wantDescription; // one-line "want" from the GDD roster table
 
         [Header("Detection Tells (diegetic — GDD 2.4)")]
         public float coldZoneRadius = 4f;
         [Tooltip("Optional — leave empty to auto-find the player's CaretakerLantern via CaretakerLantern.Instance.")]
         public LanternLaurel.Player.CaretakerLantern nearbyLantern;
-
-        private LanternLaurel.Player.CaretakerLantern ResolveLantern()
-            => nearbyLantern != null ? nearbyLantern : LanternLaurel.Player.CaretakerLantern.Instance;
 
         public SpiritResolutionState State { get; private set; } = SpiritResolutionState.Unresolved;
 
