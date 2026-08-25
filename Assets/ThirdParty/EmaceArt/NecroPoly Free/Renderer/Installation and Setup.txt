@@ -1,0 +1,22 @@
+Installation and Setup
+
+To properly install the renderer, make sure the appropriate render pipeline is already configured. Depending on whether you're using URP (Universal Render Pipeline) or HDRP (High Definition Render Pipeline), follow the steps below:
+
+Install the selected renderer by double-clicking on either "FreeNecropoly HDRP.Package" or "FreeNecropoly URP.Package," located in the Assets/EmaceArt/Renderer/ folder.
+
+1. Renderer Configuration:
+URP: Go to Edit > Project Settings > Graphics. In the "Scriptable Render Pipeline Settings" section, select the appropriate URP Asset.
+HDRP: Go to Edit > Project Settings > Graphics. In the "Scriptable Render Pipeline Settings" section, select the appropriate HDRP Asset.
+2. Installing My Asset Package:
+After configuring the renderer, install the prepared package. The package will automatically add the following to your project:
+
+Materials tailored to the chosen render pipeline.
+Post-processing profiles.
+Skybox:
+In cube format for URP.
+In the appropriate format for HDRP.
+
+3. Installation Paths:
+You will find the material files in Assets/EmaceArt/Materials/.
+Post-processing profiles will be available in Assets/EmaceArt/Renderer/.
+Skybox files will be available in Assets/EmaceArt/Renderer/.
