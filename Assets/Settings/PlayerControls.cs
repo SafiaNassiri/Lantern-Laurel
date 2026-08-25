@@ -147,7 +147,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Crouch"",
+                    ""name"": ""Sprint"",
                     ""type"": ""Button"",
                     ""id"": ""1f0b9880-4180-4090-b578-9abcabfcc978"",
                     ""expectedControlType"": """",
@@ -334,11 +334,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""81e64a3b-1819-41a3-8615-f2709ea22f3c"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Crouch"",
+                    ""action"": ""Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -366,7 +366,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_ToolWheel = m_Player.FindAction("ToolWheel", throwIfNotFound: true);
         m_Player_UseTool = m_Player.FindAction("UseTool", throwIfNotFound: true);
         m_Player_OpenGrimoire = m_Player.FindAction("OpenGrimoire", throwIfNotFound: true);
-        m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
+        m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_DrawRitual = m_Player.FindAction("DrawRitual", throwIfNotFound: true);
     }
 
@@ -454,7 +454,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ToolWheel;
     private readonly InputAction m_Player_UseTool;
     private readonly InputAction m_Player_OpenGrimoire;
-    private readonly InputAction m_Player_Crouch;
+    private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_DrawRitual;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
@@ -492,9 +492,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @OpenGrimoire => m_Wrapper.m_Player_OpenGrimoire;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Crouch".
+        /// Provides access to the underlying input action "Player/Sprint".
         /// </summary>
-        public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
+        public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         /// <summary>
         /// Provides access to the underlying input action "Player/DrawRitual".
         /// </summary>
@@ -543,9 +543,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @OpenGrimoire.started += instance.OnOpenGrimoire;
             @OpenGrimoire.performed += instance.OnOpenGrimoire;
             @OpenGrimoire.canceled += instance.OnOpenGrimoire;
-            @Crouch.started += instance.OnCrouch;
-            @Crouch.performed += instance.OnCrouch;
-            @Crouch.canceled += instance.OnCrouch;
+            @Sprint.started += instance.OnSprint;
+            @Sprint.performed += instance.OnSprint;
+            @Sprint.canceled += instance.OnSprint;
             @DrawRitual.started += instance.OnDrawRitual;
             @DrawRitual.performed += instance.OnDrawRitual;
             @DrawRitual.canceled += instance.OnDrawRitual;
@@ -578,9 +578,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @OpenGrimoire.started -= instance.OnOpenGrimoire;
             @OpenGrimoire.performed -= instance.OnOpenGrimoire;
             @OpenGrimoire.canceled -= instance.OnOpenGrimoire;
-            @Crouch.started -= instance.OnCrouch;
-            @Crouch.performed -= instance.OnCrouch;
-            @Crouch.canceled -= instance.OnCrouch;
+            @Sprint.started -= instance.OnSprint;
+            @Sprint.performed -= instance.OnSprint;
+            @Sprint.canceled -= instance.OnSprint;
             @DrawRitual.started -= instance.OnDrawRitual;
             @DrawRitual.performed -= instance.OnDrawRitual;
             @DrawRitual.canceled -= instance.OnDrawRitual;
@@ -667,12 +667,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnOpenGrimoire(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Crouch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Sprint" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnCrouch(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "DrawRitual" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

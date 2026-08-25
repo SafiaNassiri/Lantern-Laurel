@@ -1,29 +1,33 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace GraveyardShift.Player
 {
-    /// <summary>
-    /// Drives a CharacterController at a single fixed jog pace.
-    /// </summary>
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
         [Header("Movement")]
-        [SerializeField] private float jogSpeed = 3.5f;
+        [SerializeField] private float walkSpeed = 2.5f;
+        [SerializeField] private float sprintSpeed = 5.0f;
+        [SerializeField] private float rotationSmoothTime = 0.1f;
         [SerializeField] private float gravity = -9.81f;
 
-        [Header("Body-Follows-Camera Look")]
-        [Tooltip("Lower = snappier turn, higher = lazier/smoother turn. In seconds, roughly how long the body takes to catch up to the camera's facing.")]
-        [SerializeField] private float turnSmoothTime = 0.12f;
-        private float _turnSmoothVelocity;
-
-        [Header("Camera Reference")]
-        [Tooltip("Drag your Cinemachine follow camera's transform here. Movement direction is relative to this.")]
+        [Header("References")]
+        [Tooltip("Assign your Cinemachine or Main Camera transform here.")]
         [SerializeField] private Transform cameraTransform;
+        [SerializeField] private Animator animator;
+        [SerializeField] private float animDampTime = 0.1f;
 
         private CharacterController _controller;
         private PlayerControls _controls;
+        private float _turnSmoothVelocity;
         private float _verticalVelocity;
+        private bool _isSprinting;
+
+        private int _speedHash;
+        private int _inputXHash;
+        private int _inputYHash;
+        private int _isSprintingHash;
 
         private void Awake()
         {
@@ -32,76 +36,103 @@ namespace GraveyardShift.Player
 
             if (cameraTransform == null && Camera.main != null)
                 cameraTransform = Camera.main.transform;
+
+            if (animator == null)
+                animator = GetComponentInChildren<Animator>();
+
+            _speedHash = Animator.StringToHash("Speed");
+            _inputXHash = Animator.StringToHash("InputX");
+            _inputYHash = Animator.StringToHash("InputY");
+            _isSprintingHash = Animator.StringToHash("IsSprinting");
         }
 
         private void OnEnable()
         {
-            if (_controls == null)
-            {
-                Debug.LogError("[PlayerController] _controls is NULL in OnEnable!");
-                return;
-            }
-
+            if (_controls == null) return;
             _controls.Player.Enable();
+            _controls.Player.Sprint.performed += OnSprintPerformed;
+            _controls.Player.Sprint.canceled += OnSprintCanceled;
         }
 
         private void OnDisable()
         {
             if (_controls != null)
+            {
+                _controls.Player.Sprint.performed -= OnSprintPerformed;
+                _controls.Player.Sprint.canceled -= OnSprintCanceled;
                 _controls.Player.Disable();
+            }
         }
+
+        private void OnSprintPerformed(InputAction.CallbackContext context) => _isSprinting = true;
+        private void OnSprintCanceled(InputAction.CallbackContext context) => _isSprinting = false;
 
         private void Update()
         {
-            Vector2 moveInput = _controls.Player.Move.ReadValue<Vector2>();
-            RotateBodyToCamera();
-            MoveCharacter(moveInput);
-        }
+            Vector2 input = _controls.Player.Move.ReadValue<Vector2>();
+            Vector3 direction = new Vector3(input.x, 0f, input.y).normalized;
 
-        /// <summary>
-        /// Smoothly rotates the player's yaw to match the camera's current facing direction, every frame — independent of movement input.
-        /// This is what gives the "turn to look" feel: moving the mouse turns the body even while standing still.
-        /// </summary>
-        private void RotateBodyToCamera()
-        {
-            if (cameraTransform == null) return;
-
-            float targetYaw = cameraTransform.eulerAngles.y;
-            float currentYaw = transform.eulerAngles.y;
-            float smoothedYaw = Mathf.SmoothDampAngle(
-                currentYaw, targetYaw, ref _turnSmoothVelocity, turnSmoothTime);
-
-            transform.rotation = Quaternion.Euler(0f, smoothedYaw, 0f);
-        }
-
-        private void MoveCharacter(Vector2 input)
-        {
-            Vector3 inputDir = new Vector3(input.x, 0f, input.y);
-
-            // Apply gravity so the controller stays grounded on slopes.
+            // Gravity Calculation
             if (_controller.isGrounded && _verticalVelocity < 0f)
-                _verticalVelocity = -2f;
-            _verticalVelocity += gravity * Time.deltaTime;
-
-            if (inputDir.sqrMagnitude < 0.0001f)
             {
-                _controller.Move(new Vector3(0f, _verticalVelocity, 0f) * Time.deltaTime);
-                return;
+                _verticalVelocity = -2f;
+            }
+            else
+            {
+                _verticalVelocity += gravity * Time.deltaTime;
             }
 
-            // Movement stays camera-relative regardless of the body's current facing, so movement always feels immediate even mid-turn.
-            Vector3 camForward = cameraTransform != null ? cameraTransform.forward : Vector3.forward;
-            Vector3 camRight = cameraTransform != null ? cameraTransform.right : Vector3.right;
-            camForward.y = 0f;
-            camRight.y = 0f;
-            camForward.Normalize();
-            camRight.Normalize();
+            if (direction.magnitude >= 0.1f)
+            {
+                // Calculate target angle based on input + camera yaw
+                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
 
-            Vector3 moveDir = (camForward * inputDir.z + camRight * inputDir.x).normalized;
+                // Smoothly rotate character toward movement heading
+                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, rotationSmoothTime);
+                transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            Vector3 motion = moveDir * jogSpeed;
-            motion.y = _verticalVelocity;
-            _controller.Move(motion * Time.deltaTime);
+                // Move forward along the target angle
+                Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+                float currentSpeed = _isSprinting ? sprintSpeed : walkSpeed;
+
+                Vector3 motion = moveDir.normalized * currentSpeed;
+                motion.y = _verticalVelocity;
+                _controller.Move(motion * Time.deltaTime);
+
+                // Update Animator Parameters
+                if (animator != null)
+                {
+                    animator.SetBool(_isSprintingHash, _isSprinting);
+
+                    if (_isSprinting)
+                    {
+                        // Set Speed to 1.0 (Run) and send directional axes
+                        animator.SetFloat(_speedHash, 1.0f, animDampTime, Time.deltaTime);
+                        animator.SetFloat(_inputXHash, input.x, animDampTime, Time.deltaTime);
+                        animator.SetFloat(_inputYHash, input.y, animDampTime, Time.deltaTime);
+                    }
+                    else
+                    {
+                        // Set Speed to 0.5 (Walk)
+                        animator.SetFloat(_speedHash, 0.5f, animDampTime, Time.deltaTime);
+                        animator.SetFloat(_inputXHash, 0f, animDampTime, Time.deltaTime);
+                        animator.SetFloat(_inputYHash, 1f, animDampTime, Time.deltaTime);
+                    }
+                }
+            }
+            else
+            {
+                // Standing Still / Idle
+                _controller.Move(new Vector3(0f, _verticalVelocity, 0f) * Time.deltaTime);
+
+                if (animator != null)
+                {
+                    animator.SetBool(_isSprintingHash, false);
+                    animator.SetFloat(_speedHash, 0f, animDampTime, Time.deltaTime);
+                    animator.SetFloat(_inputXHash, 0f, animDampTime, Time.deltaTime);
+                    animator.SetFloat(_inputYHash, 0f, animDampTime, Time.deltaTime);
+                }
+            }
         }
     }
 }
