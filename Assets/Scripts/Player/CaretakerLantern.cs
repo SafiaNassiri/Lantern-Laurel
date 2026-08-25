@@ -8,6 +8,12 @@ namespace LanternLaurel.Player
     [RequireComponent(typeof(Light))]
     public class CaretakerLantern : MonoBehaviour
     {
+        /// <summary>
+        /// Simple auto-lookup so scene objects (like SpiritController zones) don't need a manual Inspector drag-and-drop for every instance.
+        /// Assumes a single player lantern per scene, which holds for this game's scope (one playable character).
+        /// </summary>
+        public static CaretakerLantern Instance { get; private set; }
+
         [Header("Light Settings")]
         [SerializeField] private float baseIntensity = 2.5f;
         [SerializeField] private float maxRange = 12f;
@@ -29,6 +35,8 @@ namespace LanternLaurel.Player
 
         private void Awake()
         {
+            Instance = this;
+
             _lanternLight = GetComponent<Light>();
             _lanternLight.type = LightType.Point;
             _lanternLight.color = normalColor;
@@ -77,6 +85,22 @@ namespace LanternLaurel.Player
         public void SetSpiritProximity(bool nearby)
         {
             isSpiritNearby = nearby;
+        }
+
+        /// <summary>
+        /// One-shot flicker for a fixed duration, then automatically returns to normal.
+        /// </summary>
+        public void Pulse(float durationSeconds = 2f)
+        {
+            StopAllCoroutines(); // avoid overlapping pulses stacking oddly
+            StartCoroutine(PulseRoutine(durationSeconds));
+        }
+
+        private System.Collections.IEnumerator PulseRoutine(float durationSeconds)
+        {
+            isSpiritNearby = true;
+            yield return new WaitForSeconds(durationSeconds);
+            isSpiritNearby = false;
         }
 
         /// <summary>
