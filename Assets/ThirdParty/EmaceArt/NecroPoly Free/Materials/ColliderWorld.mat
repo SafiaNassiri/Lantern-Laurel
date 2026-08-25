@@ -12,6 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _ENVIRONMENTREFLECTIONS_OFF
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords:
   - _DISABLE_SSR_TRANSPARENT
@@ -32,6 +33,7 @@ Material:
   - TransparentBackface
   - RayTracingPrepass
   - DepthOnly
+  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -383,4 +385,4 @@ MonoBehaviour:
   version: 13
   hdPluginSubTargetMaterialVersions:
     m_Keys: []
-    m_Values: 
+    m_Values:

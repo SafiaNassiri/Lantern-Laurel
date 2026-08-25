@@ -5,7 +5,6 @@ namespace LanternLaurel.Player
     /// <summary>
     /// Handles practical illumination, fuel drain, and supernatural flicker response.
     /// </summary>
-    [RequireComponent(typeof(Light))]
     public class CaretakerLantern : MonoBehaviour
     {
         /// <summary>
@@ -14,9 +13,13 @@ namespace LanternLaurel.Player
         /// </summary>
         public static CaretakerLantern Instance { get; private set; }
 
+        [Header("Light Reference")]
+        [Tooltip("Assign your independent Point Light child GameObject here.")]
+        [SerializeField] private Light lanternLight;
+
         [Header("Light Settings")]
-        [SerializeField] private float baseIntensity = 2.5f;
-        [SerializeField] private float maxRange = 12f;
+        [SerializeField] private float baseIntensity = 5.0f;
+        [SerializeField] private float maxRange = 15f;
         [SerializeField] private Color normalColor = new Color(1.0f, 0.78f, 0.45f); // Warm amber
         [SerializeField] private Color spiritProximityColor = new Color(0.4f, 0.85f, 0.85f); // Cool teal
 
@@ -30,17 +33,29 @@ namespace LanternLaurel.Player
         [SerializeField] private float flickerSpeed = 20f;
         [SerializeField] private float flickerIntensityVariance = 0.8f;
 
-        private Light _lanternLight;
         private float _noiseOffset;
 
         private void Awake()
         {
             Instance = this;
 
-            _lanternLight = GetComponent<Light>();
-            _lanternLight.type = LightType.Point;
-            _lanternLight.color = normalColor;
-            _lanternLight.range = maxRange;
+            // Fallback: If not assigned in Inspector, check children first, then this GameObject
+            if (lanternLight == null)
+            {
+                lanternLight = GetComponentInChildren<Light>();
+            }
+
+            if (lanternLight != null)
+            {
+                lanternLight.type = LightType.Point;
+                lanternLight.color = normalColor;
+                lanternLight.range = maxRange;
+            }
+            else
+            {
+                Debug.LogWarning("[CaretakerLantern] No Light component assigned or found in children!", this);
+            }
+
             _noiseOffset = Random.Range(0f, 100f);
         }
 
@@ -61,6 +76,8 @@ namespace LanternLaurel.Player
 
         private void UpdateIllumination()
         {
+            if (lanternLight == null) return;
+
             float fuelPercent = currentFuel / maxFuel;
             float targetIntensity = baseIntensity * fuelPercent;
 
@@ -69,13 +86,13 @@ namespace LanternLaurel.Player
                 // Procedural Perlin flicker
                 float noise = Mathf.PerlinNoise((Time.time * flickerSpeed) + _noiseOffset, 0f);
                 float flicker = (noise * 2f - 1f) * flickerIntensityVariance;
-                _lanternLight.intensity = Mathf.Max(0.2f, targetIntensity + flicker);
-                _lanternLight.color = Color.Lerp(normalColor, spiritProximityColor, 0.5f);
+                lanternLight.intensity = Mathf.Max(0.2f, targetIntensity + flicker);
+                lanternLight.color = Color.Lerp(normalColor, spiritProximityColor, 0.5f);
             }
             else
             {
-                _lanternLight.intensity = targetIntensity;
-                _lanternLight.color = normalColor;
+                lanternLight.intensity = targetIntensity;
+                lanternLight.color = normalColor;
             }
         }
 
