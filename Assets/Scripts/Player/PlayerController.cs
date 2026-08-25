@@ -34,8 +34,22 @@ namespace GraveyardShift.Player
                 cameraTransform = Camera.main.transform;
         }
 
-        private void OnEnable() => _controls.Player.Enable();
-        private void OnDisable() => _controls.Player.Disable();
+        private void OnEnable()
+        {
+            if (_controls == null)
+            {
+                Debug.LogError("[PlayerController] _controls is NULL in OnEnable!");
+                return;
+            }
+
+            _controls.Player.Enable();
+        }
+
+        private void OnDisable()
+        {
+            if (_controls != null)
+                _controls.Player.Disable();
+        }
 
         private void Update()
         {

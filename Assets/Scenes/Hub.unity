@@ -465,7 +465,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1156661046
+--- !u!1 &1162072558
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -473,23 +473,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1156661048}
-  - component: {fileID: 1156661047}
-  - component: {fileID: 1156661049}
+  - component: {fileID: 1162072561}
+  - component: {fileID: 1162072560}
+  - component: {fileID: 1162072559}
   m_Layer: 0
-  m_Name: Chore_SweepEastPath
+  m_Name: Grimoire_Pickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!65 &1156661047
+--- !u!114 &1162072559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162072558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6408423886991ca41a522ea705786b16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GraveyardShift.Grimoire.GrimoirePickup
+  grimoirePage: {fileID: 11400000, guid: 285a058951a5e8a4b9b87c7144c1a032, type: 2}
+  ritualController: {fileID: 1886783430}
+  verbToUnlock: {fileID: 1886783429}
+--- !u!65 &1162072560
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1156661046}
+  m_GameObject: {fileID: 1162072558}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -502,37 +517,23 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 6.553978, y: 1, z: 5.5360646}
-  m_Center: {x: 2.776989, y: 0, z: 2.2680323}
---- !u!4 &1156661048
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1162072561
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1156661046}
+  m_GameObject: {fileID: 1162072558}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.9, y: 0, z: 1.73}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -10.09, y: 4.96, z: -2.17117}
+  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1156661049
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1156661046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b54aa3e6e13679419b92b997d588fbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GraveyardShift.Chores.ChoreInteractable
-  choreId: sweep_east_path
-  interactPrompt: Press E to interact
 --- !u!1 &1414558854
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010,6 +1011,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cdf9c4bfa153146afbf56ece1244bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GraveyardShift.Player.InteractDebug
+--- !u!114 &1886783429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886783416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d90b0809f34e7429f4d17bb8e5e3e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GraveyardShift.Rituals.SaltLineRitual
+  minPointDistance: 0.35
+  saltPointPrefab: {fileID: 0}
+--- !u!114 &1886783430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886783416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5393c4b792856e244a08965f0cdc69d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GraveyardShift.Rituals.RitualController
 --- !u!1 &1917126004
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,6 +1353,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8898891693013609774, guid: f6224cde4bb598b49b4f9da2206d1d6a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1886783423}
+    - targetCorrespondingSourceObject: {fileID: 8898891693013609774, guid: f6224cde4bb598b49b4f9da2206d1d6a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1886783430}
+    - targetCorrespondingSourceObject: {fileID: 8898891693013609774, guid: f6224cde4bb598b49b4f9da2206d1d6a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1886783429}
   m_SourcePrefab: {fileID: 100100000, guid: f6224cde4bb598b49b4f9da2206d1d6a, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
